@@ -63,7 +63,12 @@ public class BinaryExpressionTree {
         }
         if (root.key.getClass() == String.class) {
             ins = insertRecursive(root.right, s, false);
-            if (!ins.inserted) ins = insertRecursive(root.left, s, false);
+            if (ins.inserted) root.right=ins.root;
+            if (!ins.inserted){
+                ins = insertRecursive(root.left, s, false);
+                if (ins.inserted) root.left=ins.root;
+            }
+
             return new InsertClass(root, ins.inserted);
         }
         return ins;

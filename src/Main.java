@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         BinaryExpressionTree bet = new BinaryExpressionTree();
         Stack<Object> st = new Stack<>();
-        ///*
+        /*
         st.push(12);
         //st.push(13);
         //st.push("+");
@@ -15,9 +15,9 @@ public class Main {
         st.push("+");
         st.push("+");
 
-         //*/
+         */
         //4.0, 3.0, +, 2.0, 1.0, +, 2.0, *, -, 3.0, +, 2.0, /
-        /*
+        ///*
         st.push(4);
         st.push(3);
         st.push("+");
@@ -32,7 +32,7 @@ public class Main {
         st.push(2);
         st.push("/");
 
-         */
+         //*/
         bet.load(st);
         //bet.insert("+");
         //System.out.println("preorder: ");
