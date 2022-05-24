@@ -16,16 +16,16 @@ public class RPNAnalyzer {
     // o ograniczonej pojemności
     public static final int MAX_NUMBER_OF_TOKENS = 100;
 
-    public static IQueue<Object> analize(String inputStr) {
+    public static IQueue<String> analize(String inputStr) {
         StreamTokenizer st = new StreamTokenizer(new StringReader(inputStr));
         st.ordinaryChar('/'); // traktuj ‘/’ jako zwykły znak
         st.ordinaryChar('-'); // traktuj ‘-’ jako zwykły znak
-        IQueue<Object> queue = new ArrayQueue<Object>(MAX_NUMBER_OF_TOKENS);
+        IQueue<String> queue = new ArrayQueue<>(MAX_NUMBER_OF_TOKENS);
         IStack<Object> stack = new ArrayStack<Object>(MAX_NUMBER_OF_TOKENS);
         try {
             while (st.nextToken() != StreamTokenizer.TT_EOF) {
                 if (st.ttype == StreamTokenizer.TT_NUMBER)
-                    queue.enqueue(new Double(st.nval));
+                    queue.enqueue((int)st.nval+"");
                 else if (st.ttype == '(')
                     stack.push(new LeftBracket());
                 else if (st.ttype == ')') {
@@ -33,7 +33,7 @@ public class RPNAnalyzer {
                     do {
                         elem = stack.pop();
                         if (!(elem instanceof LeftBracket))
-                            queue.enqueue(elem);
+                            queue.enqueue(elem+"");
                     } while (!(elem instanceof LeftBracket));
                 } else // Operator
                 {
@@ -42,14 +42,14 @@ public class RPNAnalyzer {
                     Object topElem;
                     while (!stack.isEmpty() && ((topElem = stack.top()) instanceof Operator)
                             && ((Operator) topElem).getPriority() >= priorityOper1) {
-                        queue.enqueue(stack.pop());
+                        queue.enqueue(stack.pop()+"");
                     }
                     stack.push(oper1);
                 }
             }
             // na koniec przerzucenie elementów ze stosu na koniec kolejki
             while (!stack.isEmpty())
-                queue.enqueue(stack.pop());
+                queue.enqueue(stack.pop()+"");
         } catch (IOException | FullQueueException | EmptyStackException | FullStackException e) {
             e.printStackTrace();
         }
@@ -85,7 +85,7 @@ public class RPNAnalyzer {
             e.printStackTrace();
         }
     }
-
+/*
     public static void main(String[] args) {
         String inputStr = "((4+3)-(2+1)*2+3)/2";
         System.out.println("for: " + inputStr);
@@ -93,6 +93,8 @@ public class RPNAnalyzer {
         //System.out.println(queue);
         System.out.println(toRPNString(queue));
     }
+
+ */
 
     private static class Operator {
         final char _ch;

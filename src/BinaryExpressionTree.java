@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -51,7 +52,8 @@ public class BinaryExpressionTree {
             }
         }
     }
-    public void insert2(Object s){
+
+    public void insert2(Object s) {
         root = insertRecursive(root, s, false).root;
     }
 
@@ -63,10 +65,10 @@ public class BinaryExpressionTree {
         }
         if (root.key.getClass() == String.class) {
             ins = insertRecursive(root.right, s, false);
-            if (ins.inserted) root.right=ins.root;
-            if (!ins.inserted){
+            if (ins.inserted) root.right = ins.root;
+            if (!ins.inserted) {
                 ins = insertRecursive(root.left, s, false);
-                if (ins.inserted) root.left=ins.root;
+                if (ins.inserted) root.left = ins.root;
             }
 
             return new InsertClass(root, ins.inserted);
@@ -211,6 +213,22 @@ public class BinaryExpressionTree {
         return result;
     }
 
+    public void levelCounter() {
+        ArrayList<Node> queue = new ArrayList<>();
+        int i = 0;
+        if (root != null) {
+            queue.add(root);
+            while (i < queue.size()) {
+                Node temp = queue.get(i);
+                System.out.print(temp.key + " ");
+                if (temp.left != null) queue.add(temp.left);
+                if (temp.right != null) queue.add(temp.right);
+                i++;
+            }
+        }
+
+    }
+
     private class Node {
         public Object key;
         public Node left, right;
@@ -220,10 +238,12 @@ public class BinaryExpressionTree {
             left = right = null;
         }
     }
+
     private class InsertClass {
         public boolean inserted;
         public Node root;
-        public InsertClass(Node root, boolean inserted){
+
+        public InsertClass(Node root, boolean inserted) {
             this.root = root;
             this.inserted = inserted;
         }

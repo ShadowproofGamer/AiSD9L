@@ -1,9 +1,38 @@
+import queue.EmptyQueueException;
+import queue.IQueue;
+
+import java.util.Objects;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Wpisz wyrażenie:");
+        String str = "((4+3)-(2+1)*2+3)/2";
+        str = scanner.nextLine();
         BinaryExpressionTree bet = new BinaryExpressionTree();
         Stack<Object> st = new Stack<>();
+        IQueue<String> queue = RPNAnalyzer.analize(str);
+        boolean doing = true;
+        if (doing){
+            try {
+                while(!queue.isEmpty()){
+                    String s = queue.dequeue();
+                    if (Objects.equals(s, "+")||Objects.equals(s, "-")||Objects.equals(s, "/")||Objects.equals(s, "*")||Objects.equals(s, "%")){
+                        st.push(s);
+                    }else{
+                        st.push(Integer.parseInt(s));
+                    }
+                    //System.out.println(queue.dequeue());
+                }
+            } catch (EmptyQueueException e) {
+                e.printStackTrace();
+            }
+        }
+
+//
+        //}
         /*
         st.push(12);
         //st.push(13);
@@ -16,29 +45,26 @@ public class Main {
         st.push("+");
 
          */
-        //4.0, 3.0, +, 2.0, 1.0, +, 2.0, *, -, 3.0, +, 2.0, /
         ///*
-        st.push(4);
-        st.push(3);
-        st.push("+");
-        st.push(2);
-        st.push(1);
-        st.push("+");
-        st.push(2);
-        st.push("*");
-        st.push("-");
-        st.push(3);
-        st.push("+");
-        st.push(2);
-        st.push("/");
+        if (!doing){
+            st.push(4);
+            st.push(3);
+            st.push("+");
+            st.push(2);
+            st.push(1);
+            st.push("+");
+            st.push(2);
+            st.push("*");
+            st.push("-");
+            st.push(3);
+            st.push("+");
+            st.push(2);
+            st.push("/");
+        }
+
 
          //*/
         bet.load(st);
-        //bet.insert("+");
-        //System.out.println("preorder: ");
-        //bet.preorder();
-        //System.out.println("\ninorder: ");
-        //bet.inorder();
         System.out.println("\npostorder: ");
         bet.postorder();
         System.out.print(" = " + bet.result());
@@ -52,6 +78,8 @@ public class Main {
         System.out.println(bet.inorderInfix() + " = "+ bet.result());
         System.out.println("Expression result: ");
         System.out.println(bet.result());
+        System.out.println("level counter: ");
+        bet.levelCounter();
 
     }
 }
